@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+:root {
+  --bg-primary: #0A0A0C;
+  --bg-secondary: #131318;
+  --bg-tertiary: #1B1B22;
+  --bg-card: rgba(22, 22, 28, 0.78);
+  --accent-amber: #FF6A2B;
+  --accent-amber-glow: rgba(255, 106, 43, 0.35);
+  --accent-gold: #FFA726;
+  --speaker-me: #FF6A2B;
+  --speaker-other: #00D2D3;
+  --signal-recording: #FF3B30;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-bright: rgba(255, 255, 255, 0.16);
+  --safe-top: env(safe-area-inset-top, 20px);
+  --safe-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+@layer base {
+  body {
+    background-color: #0A0A0C;
+    color: #F4F4F6;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

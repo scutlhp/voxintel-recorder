@@ -1,0 +1,20 @@
+const isDev =
+  typeof import.meta !== 'undefined' &&
+  !!(import.meta as any).env &&
+  (import.meta as any).env.DEV === true;
+
+export const logger = {
+  log: (...args: any[]) => {
+    if (isDev) {
+      console.log(...args);
+    }
+  },
+  warn: (...args: any[]) => {
+    if (isDev) {
+      console.warn(...args);
+    }
+  },
+  error: (...args: any[]) => {
+    console.error(...args);
+  },
+};
