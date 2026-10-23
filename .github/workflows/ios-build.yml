@@ -29,8 +29,19 @@ jobs:
       - name: Build Web Assets
         run: pnpm run build
 
-      - name: Sync Capacitor iOS
-        run: npx cap sync ios
+      - name: Setup Capacitor iOS Project
+        run: |
+          if [ ! -d "ios" ]; then
+            npx cap add ios
+          fi
+          npx cap sync ios
+          
+          # Inject iOS Microphone and Speech Recognition permissions into Info.plist
+          PLIST="ios/App/App/Info.plist"
+          /usr/libexec/PlistBuddy -c "Add :NSMicrophoneUsageDescription string VoxIntel需要使用麦克风以录制现场语音并进行智能会议转写" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :NSSpeechRecognitionUsageDescription string VoxIntel需要使用语音识别服务以实时生成对白文字" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes array" "$PLIST" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :UIBackgroundModes:0 string audio" "$PLIST" 2>/dev/null || true
 
       - name: Build iOS Archive with Xcode
         run: |
