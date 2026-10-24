@@ -18,24 +18,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Restore Source Code from Bundles
-        run: |
-          node -e "
-          const fs = require('fs');
-          const path = require('path');
-          const all = {};
-          for (const f of ['app-files-1.json', 'app-files-2.json', 'app-files-3.json', 'app-files.json']) {
-            if (fs.existsSync(f)) {
-              Object.assign(all, JSON.parse(fs.readFileSync(f, 'utf8')));
-            }
-          }
-          for (const [p, c] of Object.entries(all)) {
-            fs.mkdirSync(path.dirname(p), { recursive: true });
-            fs.writeFileSync(p, c, 'utf8');
-          }
-          console.log('Successfully restored ' + Object.keys(all).length + ' source files.');
-          "
-
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
