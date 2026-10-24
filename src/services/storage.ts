@@ -60,7 +60,7 @@ export const StorageService = {
       fetch('/api/recordings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(recording),
+      body: JSON.stringify(recording),
       }).catch((e) => logger.warn('Background SQLite save note:', e));
     } catch (e) {
       logger.warn('Failed to call /api/recordings:', e);
@@ -75,10 +75,10 @@ export const StorageService = {
   async updateRecording(recording: Recording): Promise<Recording[]> {
     try {
       fetch(`/api/recordings/${recording.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(recording),
-      }).catch((e) => logger.warn('Background SQLite update note:', e));
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(recording),
+    }).catch((e) => logger.warn('Background SQLite update note:', e));
     } catch {}
 
     const list = this.getRecordings();
@@ -109,7 +109,7 @@ export const StorageService = {
   getSpeakers(): Speaker[] {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.SPEAKERS);
-      return data ? JSON.parse(data) : INITIAL_SPEAKERS;
+    return data ? JSON.parse(data) : INITIAL_SPEAKERS;
     } catch {
       return INITIAL_SPEAKERS;
     }
@@ -132,8 +132,8 @@ export const StorageService = {
       fetch('/api/speakers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(speaker),
-      }).catch(() => {});
+      body: JSON.stringify(speaker),
+    }).catch(() => {});
     } catch {}
 
     const list = this.getSpeakers();
@@ -155,10 +155,7 @@ export const StorageService = {
     } catch {}
 
     const list = this.getSpeakers();
-    const updated = list.map((s) => ({
-      ...s,
-      isMaster: s.id === id,
-    }));
+    const updated = list.map((s) => ({ ...s, isMaster: s.id === id }));
     this.saveSpeakersCache(updated);
     return updated;
   },
@@ -166,10 +163,10 @@ export const StorageService = {
   async enrollSpeakerSample(id: string, audioBase64: string): Promise<Speaker[]> {
     try {
       const res = await fetch(`/api/speakers/${id}/sample`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ audioBase64 }),
-      });
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ audioBase64 }),
+    });
       if (res.ok) {
         return this.fetchSpeakers();
       }
@@ -201,7 +198,7 @@ export const StorageService = {
   getSettings(): UserSettings {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-      return data ? { ...DEFAULT_SETTINGS, ...JSON.parse(data) } : DEFAULT_SETTINGS;
+    return data ? { ...DEFAULT_SETTINGS, ...JSON.parse(data) } : DEFAULT_SETTINGS;
     } catch {
       return DEFAULT_SETTINGS;
     }
