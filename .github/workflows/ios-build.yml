@@ -46,11 +46,23 @@ jobs:
       - name: Build iOS Archive with Xcode
         run: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace \
+          
+          # Capacitor 8 uses Swift Package Manager -> App.xcodeproj (no CocoaPods workspace).
+          # Auto-detect the correct project type so the build never fails on a missing workspace.
+          if [ -d "App.xcworkspace" ]; then
+            PROJECT_FLAG="-workspace App.xcworkspace"
+          else
+            PROJECT_FLAG="-project App.xcodeproj"
+          fi
+          
+          echo "Using project flag: $PROJECT_FLAG"
+          
+          xcodebuild $PROJECT_FLAG \
             -scheme App \
             -configuration Release \
             -destination "generic/platform=iOS" \
             -archivePath build/App.xcarchive \
+            -skipPackageUpdates \
             archive \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
@@ -61,7 +73,7 @@ jobs:
         run: |
           cd ios/App/build
           mkdir -p Payload
-          cp -r App.xcarchive/Products/Applications/App.app Payload/
+          cp -r App.xcarchive/Products/Applications/*.app Payload/
           zip -r VoxIntel-iOS.ipa Payload
 
       - name: Upload IPA Artifact
